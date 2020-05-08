@@ -25,6 +25,7 @@ else:
         else:
             file_type = i.lstrip()[3:]
             vim.command(f'let g:file_type = "{file_type}"')
+            block_head = i
             break
     up_num = len(lines_11)
 
@@ -41,38 +42,59 @@ else:
 EOF
 endfunction
 
-function! CopyCodeBlock()
+function! CopyCodeBlock(mode)
     call InitCodeBlock()
     python3 << EOF
+import vim
+mode = vim.eval('a:mode')
 if 'not_ok' in locals():
     del not_ok
 else:
-    vim.eval(f'''setreg('"', {code_lines})''')
-    del up_num, down_num, code_lines, line_num
+    if mode == 'i':
+        vim.eval(f'''setreg('"', {code_lines})''')
+    elif mode == 'a':
+        vim.eval(f'''setreg('"', {[block_head]+code_lines+['```']})''')
+    del up_num, down_num, code_lines, line_num, mode, block_head
 EOF
 endfunction
 
-function! SelectCodeBlock()
+function! SelectCodeBlock(mode)
     call InitCodeBlock()
     exec 'normal zn'
     python3 << EOF
+import vim
+mode = vim.eval('a:mode')
 if 'not_ok' in locals():
     del not_ok
 else:
+    if mode == 'a':
+        up_num += 1
+        down_num += 1
     m1 = f'{up_num-1}k' if up_num > 1 else ''
     m2 = f'{down_num+up_num-1}j' if down_num+up_num-1 > 0 else ''
     if len(code_lines):
         vim.command(f'''normal {m1}V{m2}''')
-    del up_num, down_num, code_lines, line_num, m1, m2
+    del up_num, down_num, code_lines, line_num, m1, m2, mode, block_head, file_type
 EOF
     exec 'normal zbjk'
 endfunction
 
-function! DeleteCodeBlock()
-    call SelectCodeBlock()
+function! DeleteCodeBlock(mode)
+    call SelectCodeBlock(a:mode)
     exec 'normal d'
 endfunction
 
-nnoremap <silent> yib :call CopyCodeBlock()<cr>
-nnoremap <silent> vib :call SelectCodeBlock()<cr>
-nnoremap <silent> dib :call DeleteCodeBlock()<cr>
+function! ChangeCodeBlock(mode)
+    call SelectCodeBlock(a:mode)
+    exec 'normal c'
+endfunction
+
+nnoremap <silent> yib :call CopyCodeBlock('i')<cr>
+nnoremap <silent> vib :call SelectCodeBlock('i')<cr>
+nnoremap <silent> dib :call DeleteCodeBlock('i')<cr>
+nnoremap <silent> cib :call ChangeCodeBlock('i')<cr>
+
+nnoremap <silent> yab :call CopyCodeBlock('a')<cr>
+nnoremap <silent> vab :call SelectCodeBlock('a')<cr>
+nnoremap <silent> dab :call DeleteCodeBlock('a')<cr>
+nnoremap <silent> cab :call ChangeCodeBlock('a')<cr>
