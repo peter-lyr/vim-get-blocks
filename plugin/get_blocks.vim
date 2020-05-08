@@ -1,4 +1,4 @@
-function! s:initcodeblock()
+function! InitCodeBlock()
     python3 << EOF
 import vim
 file_path = vim.eval("expand('%:p')")
@@ -42,7 +42,7 @@ EOF
 endfunction
 
 function! CopyCodeBlock()
-    call s:initcodeblock()
+    call InitCodeBlock()
     python3 << EOF
 if 'not_ok' in locals():
     del not_ok
@@ -53,7 +53,7 @@ EOF
 endfunction
 
 function! SelectCodeBlock()
-    call s:initcodeblock()
+    call InitCodeBlock()
     exec 'normal zn'
     python3 << EOF
 if 'not_ok' in locals():
