@@ -73,6 +73,6 @@ function! DeleteCodeBlock()
     exec 'normal d'
 endfunction
 
-nnoremap yib :call CopyCodeBlock()<cr>
-nnoremap vib :call SelectCodeBlock()<cr>
-nnoremap dib :call DeleteCodeBlock()<cr>
+nnoremap <silent> yib :call CopyCodeBlock()<cr>
+nnoremap <silent> vib :call SelectCodeBlock()<cr>
+nnoremap <silent> dib :call DeleteCodeBlock()<cr>
