@@ -1,7 +1,11 @@
 function! InitCodeBlock()
+    "python代码入口
     python3 << EOF
-import vim
-file_path = vim.eval("expand('%:p')")
+import vim # 导入接口
+file_path = vim.eval("expand('%:p')") # 获取当前文件路径
+if not file_path:
+    tmp_file = vim.eval('g:path_temp ."untitled.md"')
+    vim.command(f'w! {tmp_file}')
 line_num = vim.eval("line('.')")
 
 with open(file_path) as f:
