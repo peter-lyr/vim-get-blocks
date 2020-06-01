@@ -80,7 +80,7 @@ else:
         vim.command(f'''normal {m1}V{m2}''')
     del up_num, down_num, code_lines, line_num, m1, m2, mode, block_head, file_type
 EOF
-    exec 'normal zbjk'
+    "exec 'normal zbjk'
 endfunction
 
 function! DeleteCodeBlock(mode)
