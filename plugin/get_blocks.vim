@@ -55,9 +55,9 @@ if 'not_ok' in locals():
     del not_ok
 else:
     if mode == 'i':
-        vim.eval(f'''setreg('"', {code_lines})''')
+        vim.command(f'{int(line_num)-int(up_num)+1},{int(line_num)+int(down_num)}y')
     elif mode == 'a':
-        vim.eval(f'''setreg('"', {[block_head]+code_lines+['```']})''')
+        vim.command(f'{int(line_num)-int(up_num)},{int(line_num)+int(down_num)+1}y')
     del up_num, down_num, code_lines, line_num, mode, block_head
 EOF
 endfunction
