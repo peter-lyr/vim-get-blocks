@@ -4,7 +4,7 @@ function! InitCodeBlock()
 import vim # 导入接口
 file_path = vim.eval("expand('%:p')") # 获取当前文件路径
 if not file_path: # 判断是否已命名文件
-    file_path = vim.eval('g:path_temp ."untitled " .strftime("%Y-%m-%d %H:%M:%S %A") .".md"') # 定义临时文件存储路径
+    file_path = vim.eval('g:tmp_root ."untitled " .strftime("%Y-%m-%d %H:%M:%S %A") .".md"') # 定义临时文件存储路径
     vim.command(f'w! {file_path}') # 写入临时文件
 
 line_num = vim.eval("line('.')") # 获取光标所在行号
