@@ -8,8 +8,9 @@ if not file_path: # 判断是否已命名文件
     vim.command(f'w! ++enc=utf-8 {file_path}') # 写入临时文件
 
 line_num = vim.eval("line('.')") # 获取光标所在行号
-with open(file_path) as f: # 打开当前文件
+with open(file_path, 'rb') as f: # 打开当前文件
     lines = f.readlines() # 将每行文本存入列表中
+lines = [line.decode('utf-8') for line in lines]
 
 if '```' == lines[int(line_num)-1][:3]:
     del lines, f, file_path
