@@ -1,11 +1,9 @@
 function! InitCodeBlock()
+    call SaveTmpFile()
     "python代码入口
     python3 << EOF
 import vim # 导入接口
 file_path = vim.eval("expand('%:p')") # 获取当前文件路径
-if not file_path: # 判断是否已命名文件
-    file_path = vim.eval('g:tmp_root ."untitled_" .strftime("%Y-%m-%d_%H%M%S") .".md"') # 定义临时文件存储路径
-vim.command(f'w! ++enc=utf-8 {file_path}') # 写入临时文件
 
 line_num = vim.eval("line('.')") # 获取光标所在行号
 with open(file_path, 'rb') as f: # 打开当前文件
