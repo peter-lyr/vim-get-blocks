@@ -1,5 +1,5 @@
 function! InitCodeBlock()
-    call SaveTmpFile()
+    call SaveTmpFile('')
     "python代码入口
     python3 << EOF
 import vim # 导入接口
