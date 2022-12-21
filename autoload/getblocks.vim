@@ -6,7 +6,7 @@ endif
 
 function! s:init()
   if len(nvim_buf_get_name(0)) == 0
-    exec printf("w %s\tmp.md", s:temp)
+    exec printf('w! %s\tmp.md', s:temp)
   endif
   python3 << EOF
 import vim # 导入接口
